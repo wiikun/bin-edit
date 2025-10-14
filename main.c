@@ -150,18 +150,18 @@ int main(int argc, char* argv[]){
             if (row > 0) row--;
             break;
 
-    case KEY_DOWN: {
-        int max_row = (filesize + addsize - 1) / 16;  // 最後の行番号
-        if (row < max_row) {
-            row++;
-            // 最後の行で column がはみ出す場合は調整
-            int last_row_bytes = (filesize + addsize) % 16;
-            if (last_row_bytes != 0 && row == max_row && column >= last_row_bytes) {
-                column = last_row_bytes - 1;
+        case KEY_DOWN: {
+            int max_row = (filesize + addsize - 1) / 16;  // 最後の行番号
+            if (row < max_row) {
+                row++;
+                // 最後の行で column がはみ出す場合は調整
+                int last_row_bytes = (filesize + addsize) % 16;
+                if (last_row_bytes != 0 && row == max_row && column >= last_row_bytes) {
+                    column = last_row_bytes - 1;
+                }
             }
+            break;
         }
-        break;
-    }
 
         
         case 'w':

@@ -20,6 +20,7 @@ FILE* load(char* name,bool write){
 
     if(file == NULL){
         perror("ファイルを開けませんでした");
+        exit(1);
     }
     return file;
 }

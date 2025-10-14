@@ -176,7 +176,6 @@ int main(int argc, char* argv[]){
     }
     
 
-    getch();
     endwin();     /* curses終了、端末を元に戻す */
     free(buffer);
     fclose(file);

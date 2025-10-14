@@ -7,7 +7,7 @@ __bin-edit *.bin__ のように使います
 - '-del'をつけると4番目の引数バイト削除  
 *例*:bash  
 _./bin-edit file.bin -add 10_  
-_./bin-edit file.bin -w_  
+_./bin-edit file.bin -w 10_  
 # How to use
 execute __bin-edit *.bin__
 - '-w' creates a new file.
@@ -15,6 +15,6 @@ execute __bin-edit *.bin__
 - '-del' deletes the fourth argument byte.  
 *Example:bash*
 _./bin-edit file.bin -add 10_  
-_./bin-edit file.bin -w_
+_./bin-edit file.bin -w 10_
 # 作者
 [ホームページ](https://wiikun.github.io/html)

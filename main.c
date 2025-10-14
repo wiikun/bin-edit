@@ -5,6 +5,12 @@
 #include <string.h>
 #include <locale.h>
 
+#ifdef _WIN32
+    #include <io.h>
+#else
+    #include <unistd.h>
+#endif
+
 #define minus(x) (x*(-1))
 #define addr(x) (x*3)
 #define cursor(x,y) (y*16+x)
@@ -33,12 +39,14 @@ int save(FILE* file,unsigned char* buf,long fs){
 }
 
 int main(int argc, char* argv[]){
+    bool w = false;
     FILE* file = NULL;
     if (argc < 2) {
         fprintf(stderr, "使い方: %s <ファイル名> [-w]\n", argv[0]);
         return 1;
     }
-    if(argc > 2 && strcmp(argv[2], "-w") == 0){
+    if(argc > 3 && strcmp(argv[2], "-w") == 0){
+        w = true;
         file = load(argv[1],true);
     } else {
         file = load(argv[1],false);
@@ -64,11 +72,13 @@ int main(int argc, char* argv[]){
 
         //-addオプションがついてる時
     int addsize = 0;
+    bool del = false;
 
-    if(argc > 3 && strcmp(argv[2], "-add") == 0){
+    if((argc > 3 && strcmp(argv[2], "-add") == 0) || w){
         addsize = atoi(argv[3]);
     } else if(argc > 3 && strcmp(argv[2], "-del") == 0){
         addsize = minus(atoi(argv[3]));
+        del = true;
     }
 
     fseek(file, 0, SEEK_END);
@@ -92,7 +102,7 @@ int main(int argc, char* argv[]){
             row++;
         }
 
-        if (row >= LINES) {                // 画面いっぱいで一時停止
+        if (row >= LINES-1) {                // 画面いっぱいで一時停止
             printw("--More--");
             refresh();
             getch();
@@ -162,6 +172,12 @@ int main(int argc, char* argv[]){
             break; 
 
         case 'o':
+            #ifdef _WIN32
+                if(del) _chsize_s(_fileno(file), filesize + addsize);
+            #else
+                if(del) if(ftruncate(fileno(file), filesize + addsize)== -1) perror("ftruncate failed");
+                
+            #endif 
             save(file,buffer,filesize+addsize);
             quit = true;
             break;

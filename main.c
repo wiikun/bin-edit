@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
             row++;
         }
 
-        if (row >= LINES-1) {                // 画面いっぱいで一時停止
+        if (row >= LINES-2) {                // 画面いっぱいで一時停止
             printw("--More--");
             refresh();
             getch();
